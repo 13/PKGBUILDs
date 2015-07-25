@@ -1,0 +1,30 @@
+# Maintainer : bje <bje132@gmail.com>
+
+pkgname=gog-star-wars-dark-forces
+pkgver=1.0.0.9
+pkgrel=1
+pkgdesc="The Empire stretches its evil clutches across the galaxy, consuming planets with devastating results."
+arch=("i686" "x86_64")
+url="http://www.gog.com/game/star_wars_dark_forces"
+license=("custom")
+groups=("games")
+source=("local://gog_star_wars_dark_forces_german_${pkgver}.deb" "gog-star-wars-dark-forces")
+depends=(freetype2 unionfs-fuse)
+#options=('!strip')
+PKGEXT=.pkg.tar
+
+package() {
+  ar p gog_star_wars_dark_forces_german_${pkgver}.deb data.tar.xz | tar -xJf -
+  mkdir -p "${pkgdir}"/opt/gog/star-wars-dark-forces
+  cp -r "${srcdir}"/opt/GOG\ Games/STAR\ WARS\ Dark\ Forces\ \(German\)/* "${pkgdir}"/opt/gog/star-wars-dark-forces
+  # 
+  chown -R root:users "${pkgdir}"/opt/gog/star-wars-dark-forces/data
+  chmod -R 774 "${pkgdir}"/opt/gog/star-wars-dark-forces/data
+  install -Dm644 "${srcdir}"/opt/GOG\ Games/STAR\ WARS\ Dark\ Forces\ \(German\)/support/gog-star-wars-dark-forces-german-primary.desktop "${pkgdir}"/usr/share/applications/gog-star-wars-dark-forces.desktop
+  install -Dm644 "${srcdir}"/opt/GOG\ Games/STAR\ WARS\ Dark\ Forces\ \(German\)/support/gog-star-wars-dark-forces-german.png "${pkgdir}"/usr/share/pixmaps/star-wars-dark-forces.png
+  install -Dm644 "${srcdir}"/opt/GOG\ Games/STAR\ WARS\ Dark\ Forces\ \(German\)/docs/End\ User\ License\ Agreement.txt "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm755 "${srcdir}/gog-star-wars-dark-forces" "${pkgdir}/usr/bin/gog-star-wars-dark-forces"
+}
+
+sha256sums=('1e873c4bd75a65a78f9602ba4fd1566dc59795054b5b96de231a4e463400de1b'
+            'de75c89ce21c37fd6bed585bbfab2fec069602a03403918dfa9b7c5f0824f483')
