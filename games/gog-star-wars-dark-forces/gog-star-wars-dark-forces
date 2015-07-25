@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+gogdir="/opt/gog/star-wars-dark-forces"
+homedir="$HOME/.gog/star-wars-dark-forces"
+mkdir -p "$homedir"/{game,config/data}
+
+unionfs "$homedir/config=RW:$gogdir=RW" "$homedir/game"
+"$homedir"/game/start.sh
+fusermount -u "$homedir/game"
