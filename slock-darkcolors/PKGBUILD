@@ -1,0 +1,35 @@
+# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Maintainer: T.J. Townsend <blakkheim@archlinux.org>
+# Contributor: Sebastian A. Liem <sebastian at liem dot se>
+
+pkgname=slock
+pkgver=1.5
+pkgrel=31
+pkgdesc="A simple screen locker for X"
+arch=('x86_64')
+url="https://tools.suckless.org/slock"
+license=('MIT')
+makedepends=('git')
+depends=('libxext' 'libxrandr')
+source=("git+https://git.suckless.org/slock#tag=${pkgver}"
+        "dark.patch")
+sha256sums=('b5517afa598992f0d90e6847a2aec2837679f3b41468298e56235528c8baf934'
+            'SKIP')
+
+prepare() {
+  cd $pkgname
+  patch -p1 < "$srcdir/dark.patch"
+  sed -i 's|static const char \*group = "nogroup";|static const char *group = "nobody";|' config.def.h
+  sed -ri 's/((CPP|C|LD)FLAGS) =/\1 +=/g' config.mk
+}
+
+build() {
+  cd $pkgname
+  make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11
+}
+
+package() {
+  cd $pkgname
+  make PREFIX=/usr DESTDIR="$pkgdir" install
+  install -m644 -D LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
