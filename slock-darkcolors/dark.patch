@@ -10,7 +10,7 @@ index 9855e21..f9d4209 100644
 -	[INPUT] =  "#005577",   /* during input */
 -	[FAILED] = "#CC3333",   /* wrong password */
 +	[INIT] =   "#000000",     /* after initialization */
-+	[INPUT] =  "#0b1340",   /* during input */
++	[INPUT] =  "#062940",   /* during input */
 +	[FAILED] = "#360004",   /* wrong password */
  };
  
